@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro tiempo juntas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #A765A7; /* Púrpura lavanda más suave */
+            --secondary-color: #E27396; /* Rosado cálido */
+            --bg-color: #F8F0E3; /* Crema muy claro */
+            --text-color: #4A4A4A; /* Gris oscuro suave */
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            font-family: 'Playfair Display', serif; /* Fuente más elegante */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            background-image: radial-gradient(circle at top left, var(--secondary-color) 0%, transparent 25%),
+                              radial-gradient(circle at bottom right, var(--primary-color) 0%, transparent 25%);
+            background-size: 80vh 80vw; /* Ajuste para un efecto más suave y artístico */
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Mantiene el fondo fijo al hacer scroll */
+            overflow-x: hidden; /* Evita scroll horizontal */
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 50px; /* Más padding para espacio */
+            border-radius: 30px; /* Bordes más suaves */
+            box-shadow: 0 15px 40px var(--shadow-color); /* Sombra más pronunciada pero suave */
+            max-width: 900px;
+            width: 90%;
+            margin: 30px 20px; /* Margen superior e inferior para espacio */
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--border-color); /* Borde más sutil */
+            backdrop-filter: blur(15px); /* Efecto de vidrio más intenso */
+            animation: fadeIn 1.8s ease-in-out; /* Animación más larga */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            font-family: 'Dancing Script', cursive; /* Fuente cursiva más elegante */
+            color: var(--secondary-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Sombra de texto sutil */
+        }
+
+        h1 {
+            font-size: 4.5em; /* Título principal más grande */
+            margin-bottom: 0.3em;
+            letter-spacing: 2px; /* Espaciado de letras */
+        }
+
+        h2 {
+            font-size: 3em; /* Subtítulos más grandes */
+            margin-top: 3em;
+            margin-bottom: 1em;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60%; /* Línea más larga */
+            height: 3px; /* Línea más gruesa */
+            background: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 5px; /* Línea suave */
+        }
+        
+        /* Estilo para el título de las poesías (sin línea) */
+        .poesia-title::after {
+            content: none;
+        }
+
+        .password-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98); /* Fondo más opaco */
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .password-prompt h1 {
+            font-size: 5em; /* Título de bienvenida más grande */
+        }
+
+        .password-prompt p {
+            font-size: 1.5em;
+            color: var(--text-color);
+        }
+
+        .password-prompt input {
+            padding: 15px; /* Más padding */
+            border: 2px solid var(--primary-color);
+            border-radius: 10px; /* Bordes más suaves */
+            font-size: 1.3em;
+            text-align: center;
+            margin-top: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .password-prompt input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(167, 101, 167, 0.7); /* Sombra de enfoque más suave */
+        }
+
+        .password-prompt button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px; /* Más padding */
+            border: none;
+            border-radius: 10px; /* Bordes más suaves */
+            cursor: pointer;
+            font-size: 1.3em;
+            margin-top: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .password-prompt button:hover {
+            background-color: #d05b7b; /* Tono más oscuro al pasar el ratón */
+            transform: scale(1.08); /* Efecto de escala más pronunciado */
+        }
+
+        #content {
+            display: none;
+        }
+
+        .heart-icon {
+            color: var(--secondary-color);
+            animation: pulse 1.8s infinite; /* Animación de pulso más larga */
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); } /* Pulso más notorio */
+            100% { transform: scale(1); }
+        }
+
+        /* Estilos del contador */
+        .professional-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 25px; /* Más espacio entre elementos */
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 25px 35px; /* Más padding */
+            border-radius: 20px; /* Bordes más suaves */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Sombra más profunda */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px; /* Ancho mínimo para mantener la forma */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .countdown-item:hover {
+            transform: translateY(-8px); /* Pequeño efecto de levantamiento */
+        }
+
+        .countdown-number {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 3.5em; /* Números más grandes */
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .countdown-label {
+            font-family: 'Playfair Display', serif; /* Nueva fuente para etiquetas */
+            font-size: 1.2em; /* Etiquetas más grandes */
+            margin-top: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .letter-content {
+            white-space: pre-wrap;
+            text-align: left;
+            font-size: 1.3em; /* Carta más grande */
+            line-height: 2; /* Mayor espacio entre líneas */
+            border-left: 4px solid var(--primary-color); /* Borde más pronunciado */
+            padding-left: 25px;
+            margin: 3em 0;
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+        }
+        
+        .poetry {
+            margin: 50px 0; /* Más margen */
+            font-size: 1.4em; /* Poesía más grande */
+            font-style: italic;
+            line-height: 1.8;
+            padding: 30px;
+            border-left: 4px solid var(--secondary-color);
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo ligero para la prosa */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            color: #555;
+        }
+        
+        .photo-album {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Fotos un poco más grandes */
+            gap: 30px; /* Más espacio entre fotos */
+            margin-top: 40px;
+        }
+
+        .photo {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px; /* Bordes más suaves */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18); /* Sombra más pronunciada */
+            transition: transform 0.5s ease-in-out, box-shadow 0.5s ease; /* Transiciones más suaves */
+            cursor: pointer;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 280px; /* Altura de fotos ajustada */
+            object-fit: cover;
+            display: block;
+            filter: grayscale(30%); /* Gris más sutil */
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+
+        .photo:hover img {
+            filter: grayscale(0%) brightness(1.05); /* Brillo sutil al pasar el ratón */
+            transform: scale(1.03); /* Zoom ligero */
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); /* Degradado más oscuro */
+            color: white;
+            padding: 20px; /* Más padding */
+            font-size: 1.1em;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.5s ease-in-out;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .photo:hover .photo-caption {
+            transform: translateY(0);
+        }
+
+        blockquote {
+            font-style: italic;
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 25px;
+            margin: 4em 0; /* Más margen */
+            color: #666; /* Color de texto más suave */
+            font-size: 1.3em; /* Texto más grande */
+            text-align: left;
+            position: relative;
+        }
+
+        blockquote::before {
+            content: "“"; /* Comillas decorativas */
+            font-family: 'Dancing Script', cursive;
+            font-size: 4em;
+            color: var(--primary-color);
+            position: absolute;
+            left: -10px;
+            top: -20px;
+            opacity: 0.3;
+        }
+
+        .author {
+            display: block;
+            text-align: right;
+            margin-top: 15px; /* Más margen */
+            font-style: normal;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1em;
+        }
+
+        footer {
+            margin-top: 80px; /* Más espacio */
+            color: #999;
+            font-size: 1em;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="password-prompt" id="passwordSection">
+        <h1 class="heart-icon">💖 ¡Bienvenida, mi amorcito! 💖</h1>
+        <p>Introduce la contraseña para continuar:</p>
+        <input type="password" id="passwordInput">
+        <button onclick="checkPassword()">Entrar</button>
+    </div>
+
+    <div id="content">
+        <div class="container">
+            <h1>Para mi amada Shalo <span class="heart-icon">❤️</span></h1>
+            <p style="font-size: 1.2em; color: #777;">Por nuestro cumple mes, mi vida.</p>
+            
+            <div class="professional-countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="years"></div>
+                    <div class="countdown-label">Años</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="months"></div>
+                    <div class="countdown-label">Meses</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days"></div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours"></div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes"></div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds"></div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
+            </div>
+
+            ---
+            
+            <h2>Mi carta para ti</h2>
+            <div class="letter-content">
+                Mi Shalo,
+
+                Hoy quiero hacerte saber que eres muy importante en mi vida. Llegaste a cambiar mi mundo y mi perspectiva para bien, me has hecho muy feliz con cada palabra, acción, chiste y pensamiento. Me encanta cómo podemos amarnos con tanta locura y no cansarnos. Me encanta que podemos ser tal para cual sin sentirnos retraídas.
+
+                Mi niña hermosa, me he esforzado en hacerte este regalo. Quizás no sea mucho, pero es muy valioso porque aquí plasmo mis letras y mi labia para hacerte saber que eres el amor de mi vida.
+
+                Quiero seguir en este presente tan hermoso junto a ti y obviamente el futuro. Mi amor, sigue siendo tal cual eres porque me encantas de sobremanera. Tu esencia siempre está presente ante mis ojos.
+
+                Eres increíble y me siento orgullosa de lo que estás logrando personalmente y colectivamente.
+
+                Con amor,
+                Tu Valen.
+            </div>
+
+            ---
+            
+            <h2>Nuestro Álbum de Fotos</h2>
+            <div class="photo-album">
+                <div class="photo">
+                    <img src="imagenes/imagen1.jpg" alt="Una cita">
+                    <div class="photo-caption">Una de nuestras citas</div>
+                </div>
+
+                <div class="photo">
+                    <img src="imagenes/imagen2.jpg" alt="Viendo tu hermoso rostro">
+                    <div class="photo-caption">Viendo esos ojos que me deslumbran</div>
+                </div>
+
+                <div class="photo">
+                    <img src="imagenes/imagen3.jpg" alt="cita casera">
+                    <div class="photo-caption">Cita casera y acogedora</div>
+                </div>
+
+                <div class="photo">
+                    <img src="imagenes/imagen4.jpg" alt="cuando salimos a disco">
+                    <div class="photo-caption">Diversión en la disco</div>
+                </div>
+
+                <div class="photo">
+                    <img src="imagenes/imagen5.jpg" alt="acurrucaditas">
+                    <div class="photo-caption">Acurrucaditas y felices</div>
+                </div>
+            </div>
+
+            ---
+            
+            <h2 class="poesia-title">Para ti, mi amor</h2>
+            <div class="poetry">
+                <p>Tu mirada,sonrisa,piel y cada rizo de tu cabello me envuelve. Me deslumbras como sol a tierra,me cautivas y me enamoras cada dia mas. Tal cual mi niña, eres el segundo sol de esta tierra y eres mi compañera en esta galaxia.
+Porque tu y yo.
+Sol y Luna.</p>
+            </div>
+
+            ---
+
+            <h2 class="poesia-title">Pensamientos de Alejandra Pizarnik</h2>
+            <blockquote>
+                "Si todo me resulta inútil, todavía me queda el abrazo, y esa manera de decir que nada es inútil, porque siempre nos queda la noche para ser nosotros, la noche que nos une."
+                <span class="author">— Alejandra Pizarnik</span>
+            </blockquote>
+            <blockquote>
+                "El amor es el espacio que la ausencia permite, la memoria que la ausencia provoca."
+                <span class="author">— Alejandra Pizarnik</span>
+            </blockquote>
+            <blockquote>
+                "El amor es un silencio que el corazón pronuncia."
+                <span class="author">— Alejandra Pizarnik</span>
+            </blockquote>
+            
+            ---
+            
+            <footer>
+                Creado para mi shalito ❤️
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const anniversaryDate = new Date('2024-04-14T00:00:00'); // **CAMBIA ESTA FECHA** a la de su primer aniversario (Año, mes-1, día).
+        const password = "kinamo"; // La contraseña "kinamo"
+
+        function checkPassword() {
+            const input = document.getElementById("passwordInput").value.toLowerCase();
+            if (input === password) {
+                document.getElementById("passwordSection").style.display = "none";
+                document.getElementById("content").style.display = "block";
+            } else {
+                alert("Contraseña incorrecta. Inténtalo de nuevo.");
+            }
+        }
+        
+        function updateCountdown() {
+            const now = new Date();
+            let timeDiff = now.getTime() - anniversaryDate.getTime();
+
+            // Cálculo de años, meses y días
+            const startYear = anniversaryDate.getFullYear();
+            const startMonth = anniversaryDate.getMonth();
+            const startDate = anniversaryDate.getDate();
+
+            let years = now.getFullYear() - startYear;
+            let months = now.getMonth() - startMonth;
+            let days = now.getDate() - startDate;
+
+            if (days < 0) {
+                months--;
+                const tempDate = new Date(now.getFullYear(), now.getMonth(), 0);
+                days = tempDate.getDate() + days;
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Cálculo de horas, minutos y segundos a partir de la diferencia total
+            let seconds = Math.floor(timeDiff / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+
+            seconds = seconds % 60;
+            minutes = minutes % 60;
+            hours = hours % 24;
+
+            // Actualizar el HTML
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
